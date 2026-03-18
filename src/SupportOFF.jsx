@@ -83,6 +83,16 @@ const SupportOFF = () => {
     setDonationAmount(10);
     setCustomAmount('');
     setIsProcessing(false);
+    setDonorDetails({
+      firstName: '',
+      lastName: '',
+      email: '',
+      subscribeNewsletter: true,
+      showOnWall: true,
+      showFirstNameOnly: false,
+      hideAmount: false,
+      comment: ''
+    });
   };
 
   const handleCloseModal = () => {
@@ -710,7 +720,7 @@ const SupportOFF = () => {
 
                 <button
                   onClick={() => setDonationStep(3)}
-                  disabled={!donorDetails.firstName || !donorDetails.email}
+                  disabled={!donorDetails.firstName || !donorDetails.email || !donorDetails.email.includes('@')}
                   className="w-full bg-[#341100] hover:bg-black text-white font-bold py-4 rounded-xl transition-colors text-lg mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Continue to Payment
