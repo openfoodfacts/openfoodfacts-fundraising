@@ -15,11 +15,80 @@ import {
   Code,
   RefreshCw,
   Award,
-  BookOpen
+  BookOpen,
+  X,
+  Lock,
+  ArrowLeft,
+  UserCircle,
+  CreditCard,
+  MessageSquareHeart,
+  Loader2
 } from 'lucide-react';
 
 const SupportOFF = () => {
   const [activeTab, setActiveTab] = useState('foundations');
+  
+  // Donation Modal States
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [donationStep, setDonationStep] = useState(1); // 1: Amount, 2: Details, 3: Payment, 4: Success
+  const [donationType, setDonationType] = useState('monthly'); // 'monthly' | 'one-time'
+  const [donationAmount, setDonationAmount] = useState(10);
+  const [customAmount, setCustomAmount] = useState('');
+  
+  // Donor Details State
+  const [donorDetails, setDonorDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subscribeNewsletter: true,
+    showOnWall: true,
+    showFirstNameOnly: false,
+    hideAmount: false,
+    comment: ''
+  });
+  
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const monthlyAmounts = [5, 10, 25, 50, 'custom'];
+  const oneTimeAmounts = [20, 50, 100, 250, 'custom'];
+
+  const getImpactMessage = () => {
+    const amt = donationAmount === 'custom' ? Number(customAmount) || 0 : donationAmount;
+    if (donationType === 'monthly') {
+      if (amt >= 50) return "Accelerates our global expansion and AI capabilities.";
+      if (amt >= 25) return "Sustains our core data science and development team.";
+      if (amt >= 10) return "Covers server costs for over 100,000 product scans every month.";
+      return "Helps keep our open-source servers running smoothly.";
+    } else {
+      if (amt >= 100) return "Provides crucial support for our infrastructure upgrades.";
+      if (amt >= 50) return "Helps us index thousands of new products and packaging data.";
+      return "Every contribution helps build a more transparent food system.";
+    }
+  };
+
+  const currentAmount = donationAmount === 'custom' ? (customAmount || 0) : donationAmount;
+
+  const handleProcessPayment = () => {
+    setIsProcessing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsProcessing(false);
+      setDonationStep(4);
+    }, 1500);
+  };
+
+  const resetDonationModal = () => {
+    setDonationStep(1);
+    setDonationType('monthly');
+    setDonationAmount(10);
+    setCustomAmount('');
+    setIsProcessing(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsDonationModalOpen(false);
+    setTimeout(resetDonationModal, 300); // Reset after animation
+  };
 
   const impactStats = [
     { icon: <Database className="w-8 h-8 text-black" />, value: "3.5M+", label: "Products in DB" },
@@ -157,9 +226,9 @@ const SupportOFF = () => {
                 <a href="#contact" className="flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl">
                   Partner with us <ArrowRight className="w-5 h-5" />
                 </a>
-                <a href="https://donate.openfoodfacts.org" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 bg-[#f2e9e4] hover:bg-[#e2d5ce] text-black px-8 py-4 rounded-full font-bold text-lg transition-all">
+                <button onClick={() => setIsDonationModalOpen(true)} className="flex items-center justify-center gap-2 bg-[#f2e9e4] hover:bg-[#e2d5ce] text-black px-8 py-4 rounded-full font-bold text-lg transition-all">
                   Make a Donation <Heart className="w-5 h-5" />
-                </a>
+                </button>
               </div>
             </div>
             <div className="relative hidden lg:block">
@@ -328,12 +397,21 @@ const SupportOFF = () => {
                 ))}
               </ul>
 
-              <a 
-                href={supportWays[activeTab].link}
-                className="inline-flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
-              >
-                {supportWays[activeTab].cta} <ArrowRight className="w-5 h-5" />
-              </a>
+              {activeTab === 'individual' ? (
+                <button 
+                  onClick={() => setIsDonationModalOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
+                >
+                  {supportWays[activeTab].cta} <ArrowRight className="w-5 h-5" />
+                </button>
+              ) : (
+                <a 
+                  href={supportWays[activeTab].link}
+                  className="inline-flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
+                >
+                  {supportWays[activeTab].cta} <ArrowRight className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -447,6 +525,287 @@ const SupportOFF = () => {
           <p className="mt-12 text-sm opacity-50 font-medium">&copy; {new Date().getFullYear()} Open Food Facts. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Donation Modal */}
+      {isDonationModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleCloseModal}></div>
+          
+          {/* Modal Content */}
+          <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            {/* Close Button */}
+            <button 
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors z-10"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+
+            {/* Step 1: Choose Amount */}
+            {donationStep === 1 && (
+              <div className="p-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#f2e9e4] rounded-full mb-4">
+                    <Heart className="w-8 h-8 text-[#341100]" />
+                  </div>
+                  <h2 className="text-2xl font-extrabold text-black">Support Open Food Facts</h2>
+                  <p className="text-gray-600 mt-2">Your donation keeps our open-source platform free for everyone.</p>
+                </div>
+
+                {/* Donation Type Toggle */}
+                <div className="flex bg-gray-100 rounded-xl p-1 mb-8">
+                  <button
+                    onClick={() => { setDonationType('monthly'); setDonationAmount(10); setCustomAmount(''); }}
+                    className={`flex-1 py-3 rounded-lg font-bold text-sm transition-all ${donationType === 'monthly' ? 'bg-[#341100] text-white shadow-md' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => { setDonationType('one-time'); setDonationAmount(50); setCustomAmount(''); }}
+                    className={`flex-1 py-3 rounded-lg font-bold text-sm transition-all ${donationType === 'one-time' ? 'bg-[#341100] text-white shadow-md' : 'text-gray-600 hover:text-black'}`}
+                  >
+                    One-time
+                  </button>
+                </div>
+
+                {/* Amount Selection */}
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  {(donationType === 'monthly' ? monthlyAmounts : oneTimeAmounts).map((amt) => (
+                    <button
+                      key={amt}
+                      onClick={() => { setDonationAmount(amt); if (amt !== 'custom') setCustomAmount(''); }}
+                      className={`py-4 rounded-xl font-bold text-lg transition-all border-2 ${
+                        donationAmount === amt 
+                          ? 'border-[#341100] bg-[#f2e9e4] text-[#341100]' 
+                          : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                      }`}
+                    >
+                      {amt === 'custom' ? 'Other' : `€${amt}`}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Custom Amount Input */}
+                {donationAmount === 'custom' && (
+                  <div className="mb-6">
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">€</span>
+                      <input
+                        type="number"
+                        min="1"
+                        value={customAmount}
+                        onChange={(e) => setCustomAmount(e.target.value)}
+                        placeholder="Enter amount"
+                        className="w-full pl-10 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-[#341100] outline-none text-lg font-bold"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Impact Message */}
+                <div className="bg-[#f2e9e4] rounded-xl p-4 mb-8">
+                  <p className="text-sm text-[#341100] font-medium flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    {getImpactMessage()}
+                  </p>
+                </div>
+
+                {/* Continue Button */}
+                <button
+                  onClick={() => setDonationStep(2)}
+                  disabled={donationAmount === 'custom' && (!customAmount || Number(customAmount) < 1)}
+                  className="w-full bg-[#341100] hover:bg-black text-white font-bold py-4 rounded-xl transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue — €{currentAmount}{donationType === 'monthly' ? '/month' : ''}
+                </button>
+              </div>
+            )}
+
+            {/* Step 2: Donor Details */}
+            {donationStep === 2 && (
+              <div className="p-8">
+                <button onClick={() => setDonationStep(1)} className="flex items-center gap-1 text-gray-500 hover:text-black font-medium mb-6 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="bg-[#f2e9e4] p-3 rounded-full">
+                    <UserCircle className="w-6 h-6 text-[#341100]" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold text-black">Your Details</h2>
+                    <p className="text-sm text-gray-500">€{currentAmount}{donationType === 'monthly' ? '/month' : ' one-time'}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">First Name</label>
+                      <input
+                        type="text"
+                        value={donorDetails.firstName}
+                        onChange={(e) => setDonorDetails({...donorDetails, firstName: e.target.value})}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none font-medium"
+                        placeholder="Jane"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">Last Name</label>
+                      <input
+                        type="text"
+                        value={donorDetails.lastName}
+                        onChange={(e) => setDonorDetails({...donorDetails, lastName: e.target.value})}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none font-medium"
+                        placeholder="Doe"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Email</label>
+                    <input
+                      type="email"
+                      value={donorDetails.email}
+                      onChange={(e) => setDonorDetails({...donorDetails, email: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none font-medium"
+                      placeholder="jane@example.org"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Leave a message (optional)</label>
+                    <textarea
+                      value={donorDetails.comment}
+                      onChange={(e) => setDonorDetails({...donorDetails, comment: e.target.value})}
+                      rows="2"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none font-medium resize-none"
+                      placeholder="A message for the Open Food Facts team..."
+                    />
+                  </div>
+
+                  {/* Preferences */}
+                  <div className="space-y-3 pt-2">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={donorDetails.subscribeNewsletter}
+                        onChange={(e) => setDonorDetails({...donorDetails, subscribeNewsletter: e.target.checked})}
+                        className="w-5 h-5 rounded border-gray-300 text-[#341100] focus:ring-[#341100]"
+                      />
+                      <span className="text-sm text-gray-700 font-medium">Subscribe to our newsletter</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={donorDetails.showOnWall}
+                        onChange={(e) => setDonorDetails({...donorDetails, showOnWall: e.target.checked})}
+                        className="w-5 h-5 rounded border-gray-300 text-[#341100] focus:ring-[#341100]"
+                      />
+                      <span className="text-sm text-gray-700 font-medium">Show my name on the Wall of Fame</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setDonationStep(3)}
+                  disabled={!donorDetails.firstName || !donorDetails.email}
+                  className="w-full bg-[#341100] hover:bg-black text-white font-bold py-4 rounded-xl transition-colors text-lg mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue to Payment
+                </button>
+              </div>
+            )}
+
+            {/* Step 3: Payment */}
+            {donationStep === 3 && (
+              <div className="p-8">
+                <button onClick={() => setDonationStep(2)} className="flex items-center gap-1 text-gray-500 hover:text-black font-medium mb-6 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Back
+                </button>
+
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="bg-[#f2e9e4] p-3 rounded-full">
+                    <CreditCard className="w-6 h-6 text-[#341100]" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold text-black">Payment</h2>
+                    <p className="text-sm text-gray-500">€{currentAmount}{donationType === 'monthly' ? '/month' : ' one-time'}</p>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <div className="bg-gray-50 rounded-xl p-5 mb-6 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Donor</span>
+                    <span className="font-bold text-black">{donorDetails.firstName} {donorDetails.lastName}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Amount</span>
+                    <span className="font-bold text-black">€{currentAmount}{donationType === 'monthly' ? '/month' : ''}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Type</span>
+                    <span className="font-bold text-black capitalize">{donationType === 'monthly' ? 'Monthly recurring' : 'One-time donation'}</span>
+                  </div>
+                </div>
+
+                {/* Simulated Payment Button */}
+                <button
+                  onClick={handleProcessPayment}
+                  disabled={isProcessing}
+                  className="w-full bg-[#341100] hover:bg-black text-white font-bold py-4 rounded-xl transition-colors text-lg flex items-center justify-center gap-2 disabled:opacity-70"
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" /> Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-5 h-5" /> Donate €{currentAmount}{donationType === 'monthly' ? '/month' : ''}
+                    </>
+                  )}
+                </button>
+
+                <p className="text-xs text-gray-400 text-center mt-4 flex items-center justify-center gap-1">
+                  <Lock className="w-3 h-3" /> Secure payment powered by Stripe
+                </p>
+              </div>
+            )}
+
+            {/* Step 4: Success */}
+            {donationStep === 4 && (
+              <div className="p-8 text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                  <MessageSquareHeart className="w-10 h-10 text-green-600" />
+                </div>
+                <h2 className="text-2xl font-extrabold text-black mb-2">Thank you, {donorDetails.firstName}!</h2>
+                <p className="text-gray-600 mb-6">
+                  Your {donationType === 'monthly' ? 'monthly' : 'one-time'} donation of <strong>€{currentAmount}</strong> makes a real difference. You are helping build a more transparent food system for everyone.
+                </p>
+                
+                {donorDetails.comment && (
+                  <div className="bg-[#f2e9e4] rounded-xl p-4 mb-6 text-left">
+                    <p className="text-sm font-bold text-[#341100] mb-1">Your message:</p>
+                    <p className="text-sm text-gray-700 italic">&ldquo;{donorDetails.comment}&rdquo;</p>
+                  </div>
+                )}
+
+                <p className="text-sm text-gray-500 mb-8">A confirmation email has been sent to <strong>{donorDetails.email}</strong>.</p>
+
+                <button
+                  onClick={handleCloseModal}
+                  className="w-full bg-[#341100] hover:bg-black text-white font-bold py-4 rounded-xl transition-colors text-lg"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
