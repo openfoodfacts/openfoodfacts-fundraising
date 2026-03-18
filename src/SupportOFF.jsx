@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Globe, 
   Users, 
@@ -27,6 +27,7 @@ import {
 
 const SupportOFF = () => {
   const [activeTab, setActiveTab] = useState('foundations');
+  const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Donation Modal States
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
@@ -99,6 +100,18 @@ const SupportOFF = () => {
     setIsDonationModalOpen(false);
     setTimeout(resetDonationModal, 300); // Reset after animation
   };
+
+  // Lock body scroll when donation modal is open
+  useEffect(() => {
+    if (isDonationModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isDonationModalOpen]);
 
   const impactStats = [
     { icon: <Database className="w-8 h-8 text-black" />, value: "3.5M+", label: "Products in DB" },
@@ -439,8 +452,16 @@ const SupportOFF = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {partners.map((partner, idx) => (
-              <div key={idx} className="bg-white border-2 border-transparent hover:border-[#341100] p-8 rounded-2xl text-center transition-all shadow-sm hover:shadow-md group">
-                <div className="w-16 h-16 mx-auto bg-gray-50 rounded-full mb-4 flex items-center justify-center group-hover:bg-[#f2e9e4] transition-colors">
+              <div 
+                key={idx} 
+                onClick={() => setSelectedPartner(selectedPartner === idx ? null : idx)}
+                className={`bg-white border-2 p-8 rounded-2xl text-center transition-all shadow-sm hover:shadow-md group cursor-pointer ${
+                  selectedPartner === idx ? 'border-[#341100] shadow-lg' : 'border-transparent hover:border-[#341100]'
+                }`}
+              >
+                <div className={`w-16 h-16 mx-auto rounded-full mb-4 flex items-center justify-center transition-colors ${
+                  selectedPartner === idx ? 'bg-[#f2e9e4]' : 'bg-gray-50 group-hover:bg-[#f2e9e4]'
+                }`}>
                   <BookOpen className="w-8 h-8 text-[#341100]" />
                 </div>
                 <h4 className="font-extrabold text-xl text-black">{partner.name}</h4>
