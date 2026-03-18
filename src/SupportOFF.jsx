@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Globe, 
   Users, 
@@ -15,98 +15,129 @@ import {
   Code,
   RefreshCw,
   Award,
-  BookOpen
+  BookOpen,
+  X,
+  Lock,
+  ArrowLeft,
+  UserCircle,
+  CreditCard,
+  MessageSquareHeart,
+  Loader2
 } from 'lucide-react';
 
 const SupportOFF = () => {
   const [activeTab, setActiveTab] = useState('foundations');
+  const [selectedPartner, setSelectedPartner] = useState(null);
+  
+  // Donation Modal States
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [donationStep, setDonationStep] = useState(1); // 1: Amount, 2: Details, 3: Payment, 4: Success
+  const [donationType, setDonationType] = useState('monthly'); // 'monthly' | 'one-time'
+  const [donationAmount, setDonationAmount] = useState(10);
+  const [customAmount, setCustomAmount] = useState('');
+  
+  // Donor Details State
+  const [donorDetails, setDonorDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subscribeNewsletter: true,
+    showOnWall: true,
+    showFirstNameOnly: false,
+    hideAmount: false,
+    comment: ''
+  });
+  
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const monthlyAmounts = [5, 10, 25, 50, 'custom'];
+  const oneTimeAmounts = [20, 50, 100, 250, 'custom'];
+
+  const getImpactMessage = () => {
+    const amt = donationAmount === 'custom' ? Number(customAmount) || 0 : donationAmount;
+    if (donationType === 'monthly') {
+      if (amt >= 50) return "Accelerates our global expansion and AI capabilities.";
+      if (amt >= 25) return "Sustains our core data science and development team.";
+      if (amt >= 10) return "Covers server costs for over 100,000 product scans every month.";
+      return "Helps keep our open-source servers running smoothly.";
+    } else {
+      if (amt >= 100) return "Provides crucial support for our infrastructure upgrades.";
+      if (amt >= 50) return "Helps us index thousands of new products and packaging data.";
+      return "Every contribution helps build a more transparent food system.";
+    }
+  };
+
+  const currentAmount = donationAmount === 'custom' ? (customAmount || 0) : donationAmount;
+
+  const handleProcessPayment = () => {
+    setIsProcessing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsProcessing(false);
+      setDonationStep(4);
+    }, 1500);
+  };
+
+  const resetDonationModal = () => {
+    setDonationStep(1);
+    setDonationType('monthly');
+    setDonationAmount(10);
+    setCustomAmount('');
+    setIsProcessing(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsDonationModalOpen(false);
+    setTimeout(resetDonationModal, 300); // Reset after animation
+  };
 
   const impactStats = [
-    { icon: <Database className="w-8 h-8 text-black" />, value: "3.5M+", label: "Products in DB" },
+    { icon: <Database className="w-8 h-8 text-black" />, value: "4M+", label: "Products in DB" },
     { icon: <Globe className="w-8 h-8 text-black" />, value: "150+", label: "Countries" },
-    { icon: <Users className="w-8 h-8 text-black" />, value: "3M+", label: "Monthly Users" },
-    { icon: <Code className="w-8 h-8 text-black" />, value: "200+", label: "Apps use our API" },
+    { icon: <Users className="w-8 h-8 text-black" />, value: "6M+", label: "Monthly Users" },
+    { icon: <Code className="w-8 h-8 text-black" />, value: "1.2K+", label: "Apps use our API" },
   ];
 
   const partners = [
-    { name: "Santé Publique France", tier: "Public Institution" },
-    { name: "Google.org", tier: "Foundation Partner" },
-    { name: "INRAE", tier: "Scientific Partner" },
-    { name: "AFNOR", tier: "Public Institution" },
-    { name: "Sorbonne Université", tier: "Research Partner" },
-    { name: "10,000+ Individuals", tier: "Grassroots Donors" }
+    { name: "Santé Publique France", tier: "Public Institution", description: "We work closely with the French national public health agency to deploy and democratize the Nutri-Score, transforming public health awareness across Europe." },
+    { name: "Google.org", tier: "Foundation Partner", description: "Through the Google.org Fellowship and financial grants, we scaled our AI capabilities, empowering us to process thousands of labels and ingredients globally." },
+    { name: "ADEME", tier: "Public Institution", description: "Partnering with the French Agency for Ecological Transition to develop robust environmental impact metrics and drive sustainable consumption." },
+    { name: "AFNIC", tier: "Private Foundation", description: "Supported by the AFNIC Foundation to strengthen our digital infrastructure, ensuring our open data remains resilient, secure, and accessible to all." },
+    { name: "EREN", tier: "Research Partner", description: "Collaborating with the Nutritional Epidemiology Research Team (EREN) to provide the vital raw data required for pivotal, independent public health studies." },
+    { name: "10,000+ Individuals", tier: "Grassroots Donors", description: "Our most important partners. Everyday citizens who scan products, edit data, and donate financially to keep the database alive, free, and completely independent." }
   ];
 
   const initiatives = [
-    {
-      title: "Health Initiative",
-      icon: <Heart className="w-8 h-8 text-[#341100]" />,
-      description: "By democratizing access to the Nutri-Score and the NOVA classification for ultra-processed foods, we empower millions to make informed dietary choices, helping to combat the global rise in diet-related diseases and obesity.",
-      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Environment Initiative",
-      icon: <Leaf className="w-8 h-8 text-[#341100]" />,
-      description: "Our pioneering Eco-Score calculates the ecological impact of food products. By aggregating complex data on carbon footprints, biodiversity, and farming practices, we incentivize sustainable consumption and production at scale.",
-      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Circular Economy",
-      icon: <RefreshCw className="w-8 h-8 text-[#341100]" />,
-      description: "Through Open Packaging Facts, we index packaging materials, shapes, and recycling instructions globally. We are building the data infrastructure needed to tackle the global plastic crisis and promote a true circular economy.",
-      image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=800"
-    }
+    { title: "Health Initiative", icon: <Heart className="w-8 h-8 text-[#341100]" />, description: "By democratizing access to the Nutri-Score and the NOVA classification for ultra-processed foods, we empower millions to make informed dietary choices, helping to combat the global rise in diet-related diseases and obesity.", image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800" },
+    { title: "Environment Initiative", icon: <Leaf className="w-8 h-8 text-[#341100]" />, description: "Our pioneering Green-Score calculates the ecological impact of food products. By aggregating complex data on carbon footprints, biodiversity, and farming practices, we incentivize sustainable consumption and production at scale.", image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800" },
+    { title: "Circular Economy", icon: <RefreshCw className="w-8 h-8 text-[#341100]" />, description: "Through Open Products Facts, we index products globally, increasing the lifespan of products by defragmenting the circular economy. We are building the open data infrastructure needed to tackle waste and promote reuse.", image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=800" }
   ];
 
   const unSDGs = [
     { num: 2, title: "Zero Hunger", color: "#DDA63A", desc: "Promoting food security and sustainable agriculture." },
     { num: 3, title: "Good Health & Well-being", color: "#4C9F38", desc: "Combating diet-related non-communicable diseases." },
     { num: 12, title: "Responsible Consumption", color: "#BF8B2E", desc: "Ensuring transparency for sustainable consumption." },
-    { num: 13, title: "Climate Action", color: "#3F7E44", desc: "Tracking food's carbon footprint via Eco-Score." },
+    { num: 13, title: "Climate Action", color: "#3F7E44", desc: "Tracking food's carbon footprint via Green-Score." },
   ];
 
   const supportWays = {
     foundations: {
-      icon: <Landmark className="w-6 h-6" />,
-      title: "Philanthropic Foundations",
-      subtitle: "Scale a Digital Public Good",
+      icon: <Landmark className="w-6 h-6" />, title: "Philanthropic Foundations", subtitle: "Scale a Digital Public Good",
       description: "Open Food Facts is a uniquely positioned lever for systemic change. By funding our core infrastructure and strategic expansion, foundations can simultaneously advance global public health, environmental sustainability, and open data initiatives.",
-      points: [
-        "Fund specific public health (NOVA) or environmental (Eco-Score) programs.",
-        "Support our expansion into new markets (e.g., US, Latin America, Asia).",
-        "Enable the development of advanced AI for global label recognition.",
-        "Ensure the long-term sustainability of an essential open-source database."
-      ],
-      cta: "Schedule a Strategy Call",
-      link: "#contact"
+      points: ["Fund specific public health (NOVA) or environmental (Green-Score) programs.", "Support our expansion into new markets (e.g., US, Latin America, Asia).", "Enable the development of advanced AI for global label recognition.", "Ensure the long-term sustainability of an essential open-source database."],
+      cta: "Schedule a Strategy Call", link: "#contact"
     },
     corporate: {
-      icon: <Code className="w-6 h-6" />,
-      title: "Tech & Health Partners",
-      subtitle: "Align your CSR with Open Data",
-      description: "In alignment with our strict independence policy, we partner with technology companies, healthcare providers, and non-food corporations who want to support transparency through infrastructure, data science, and financial sponsorship.",
-      points: [
-        "Provide cloud infrastructure and AI processing grants.",
-        "Sponsor hackathons and open-data civic initiatives.",
-        "Integrate our API into health and wellness applications.",
-        "Support our circular economy and packaging tracking goals."
-      ],
-      cta: "Become a Tech Partner",
-      link: "#contact"
+      icon: <Code className="w-6 h-6" />, title: "Tech & Infrastructure Partners", subtitle: "Align your CSR with Open Data",
+      description: "In alignment with our strict independence policy, we partner with technology companies and non-food corporations who want to support transparency. Crucially, infrastructure isn't just machines and servers—it also requires funding for the dedicated human experts who build and maintain it.",
+      points: ["Provide grants for cloud infrastructure and AI processing.", "Fund the core development team maintaining the database.", "Sponsor hackathons and open-data civic initiatives.", "Support our circular economy and product lifespan tracking goals."],
+      cta: "Become a Tech Partner", link: "#contact"
     },
     individual: {
-      icon: <Users className="w-6 h-6" />,
-      title: "Individual Donors",
-      subtitle: "Fuel the Transparency Revolution",
+      icon: <Users className="w-6 h-6" />, title: "Individual Donors", subtitle: "Fuel the Transparency Revolution",
       description: "We are an independent non-profit. We don't sell ads, and we don't sell user data. We rely on the generosity of people like you to keep our servers running and our core team working.",
-      points: [
-        "€5/month covers API access for a new innovative civic app.",
-        "€50 funds server costs for 100,000 product scans.",
-        "One-time donations help us upgrade our infrastructure.",
-        "Tax-deductible in France and several other countries."
-      ],
-      cta: "Make a Donation",
-      link: "https://donate.openfoodfacts.org"
+      points: ["€5/month covers API access for a new innovative civic app.", "€50 funds server costs for 100,000 product scans.", "One-time donations help us upgrade our infrastructure.", "Tax-deductible in France and several other countries."],
+      cta: "Make a Donation", link: "https://donate.openfoodfacts.org"
     }
   };
 
@@ -115,7 +146,316 @@ const SupportOFF = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .pulse-orange {
+          box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.7);
+          animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+          0% { box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.7); }
+          70% { box-shadow: 0 0 0 20px rgba(255, 153, 0, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(255, 153, 0, 0); }
+        }
       `}</style>
+
+      {/* Interactive Multi-Step Donation Modal */}
+      {isDonationModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-[70] flex items-center justify-center p-4 transition-opacity backdrop-blur-sm" onClick={handleCloseModal}>
+          <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl transform transition-transform max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            
+            {/* Header */}
+            {donationStep < 4 && (
+              <div className="bg-[#f2e9e4] p-6 relative flex items-center justify-center text-center">
+                {donationStep > 1 && (
+                  <button 
+                    className="absolute left-6 p-2 bg-white/50 hover:bg-white rounded-full transition-colors"
+                    onClick={() => setDonationStep(donationStep - 1)}
+                  >
+                    <ArrowLeft className="w-5 h-5 text-[#341100]" />
+                  </button>
+                )}
+                <button 
+                  className="absolute right-6 p-2 bg-white/50 hover:bg-white rounded-full transition-colors"
+                  onClick={handleCloseModal}
+                >
+                  <X className="w-5 h-5 text-[#341100]" />
+                </button>
+                <div>
+                  <h3 className="text-xl font-extrabold text-[#341100] mb-1">
+                    {donationStep === 1 && "Support Open Food Facts"}
+                    {donationStep === 2 && "Your Details"}
+                    {donationStep === 3 && "Secure Payment"}
+                  </h3>
+                  <div className="flex gap-1 justify-center mt-2">
+                    <div className={`h-1.5 w-6 rounded-full ${donationStep >= 1 ? 'bg-[#341100]' : 'bg-gray-300'}`}></div>
+                    <div className={`h-1.5 w-6 rounded-full ${donationStep >= 2 ? 'bg-[#341100]' : 'bg-gray-300'}`}></div>
+                    <div className={`h-1.5 w-6 rounded-full ${donationStep >= 3 ? 'bg-[#341100]' : 'bg-gray-300'}`}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="p-6 md:p-8">
+              
+              {/* STEP 1: AMOUNT SELECTION */}
+              {donationStep === 1 && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+                  <div className="flex bg-gray-100 p-1 rounded-xl mb-8">
+                    <button 
+                      className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${donationType === 'monthly' ? 'bg-white text-[#341100] shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                      onClick={() => { setDonationType('monthly'); setDonationAmount(10); setCustomAmount(''); }}
+                    >
+                      Monthly <span className="hidden sm:inline">(Recommended)</span>
+                    </button>
+                    <button 
+                      className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${donationType === 'one-time' ? 'bg-white text-[#341100] shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                      onClick={() => { setDonationType('one-time'); setDonationAmount(50); setCustomAmount(''); }}
+                    >
+                      One-time
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {(donationType === 'monthly' ? monthlyAmounts : oneTimeAmounts).map((amt, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setDonationAmount(amt)}
+                        className={`py-4 rounded-xl font-bold text-lg border-2 transition-all ${
+                          donationAmount === amt 
+                            ? 'border-[#341100] bg-[#f2e9e4] text-[#341100]' 
+                            : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                        }`}
+                      >
+                        {amt === 'custom' ? 'Other' : `€${amt}`}
+                      </button>
+                    ))}
+                  </div>
+
+                  {donationAmount === 'custom' && (
+                    <div className="mb-6 relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-lg">€</span>
+                      <input 
+                        type="number" min="1" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)}
+                        placeholder="Enter amount"
+                        className="w-full pl-10 pr-4 py-4 rounded-xl border-2 border-[#341100] focus:outline-none focus:ring-4 focus:ring-[#f2e9e4] font-bold text-lg text-[#341100]"
+                        autoFocus
+                      />
+                    </div>
+                  )}
+
+                  <div className="bg-blue-50 text-blue-800 p-4 rounded-xl mb-8 flex gap-3 items-start border border-blue-100">
+                    <Heart className="w-5 h-5 mt-0.5 flex-shrink-0 text-blue-500" />
+                    <p className="text-sm font-medium leading-tight">{getImpactMessage()}</p>
+                  </div>
+
+                  <button 
+                    disabled={donationAmount === 'custom' && !customAmount}
+                    className="w-full bg-[#341100] hover:bg-black disabled:bg-gray-300 text-[#f2e9e4] font-extrabold text-xl py-4 rounded-xl transition-all shadow-lg flex justify-center items-center gap-2"
+                    onClick={() => setDonationStep(2)}
+                  >
+                    Next: Details <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+
+              {/* STEP 2: DETAILS & OPTIONS */}
+              {donationStep === 2 && (
+                <div className="animate-in fade-in slide-in-from-right-4 duration-300 space-y-6">
+                  
+                  {/* Account / Badge Promo */}
+                  <div className="bg-[#FFF4E5] border border-[#FFE0B2] p-4 rounded-xl">
+                    <div className="flex gap-3 mb-3">
+                      <Award className="text-[#FF9900] flex-shrink-0 w-6 h-6" />
+                      <p className="text-sm text-[#8A5000] leading-snug">
+                        <strong>Unlock your Donor Badge!</strong> Connect your Open Food Facts account or use the same email below to show our community's gratitude on your profile.
+                      </p>
+                    </div>
+                    <button className="w-full py-2.5 bg-white border border-[#FFE0B2] shadow-sm rounded-lg font-bold text-[#8A5000] hover:bg-gray-50 flex justify-center items-center gap-2 transition-colors">
+                      <UserCircle className="w-5 h-5" /> Connect with Open Food Facts
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-4 text-gray-400 text-xs font-bold uppercase">
+                    <hr className="flex-1 border-gray-200" /> OR CONTINUE AS GUEST <hr className="flex-1 border-gray-200" />
+                  </div>
+
+                  {/* Identity Form */}
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <input 
+                        placeholder="First Name" 
+                        className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-[#341100] outline-none font-medium" 
+                        value={donorDetails.firstName} onChange={e => setDonorDetails({...donorDetails, firstName: e.target.value})}
+                      />
+                      <input 
+                        placeholder="Last Name" 
+                        className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-[#341100] outline-none font-medium" 
+                        value={donorDetails.lastName} onChange={e => setDonorDetails({...donorDetails, lastName: e.target.value})}
+                      />
+                    </div>
+                    <input 
+                      placeholder="Email Address" type="email" 
+                      className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-[#341100] outline-none font-medium" 
+                      value={donorDetails.email} onChange={e => setDonorDetails({...donorDetails, email: e.target.value})}
+                    />
+                  </div>
+
+                  {/* Preferences Toggles */}
+                  <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl space-y-4">
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div className="mt-0.5 relative flex items-center justify-center">
+                        <input type="checkbox" className="peer sr-only" checked={donorDetails.subscribeNewsletter} onChange={e => setDonorDetails({...donorDetails, subscribeNewsletter: e.target.checked})} />
+                        <div className="w-5 h-5 border-2 border-gray-300 rounded peer-checked:bg-[#341100] peer-checked:border-[#341100] transition-colors"></div>
+                        <CheckCircle2 className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" />
+                      </div>
+                      <span className="text-sm text-gray-700 font-medium leading-snug">Subscribe to the Friends of Open Food Facts mailing list to receive updates. (Unsubscribe anytime)</span>
+                    </label>
+
+                    <div className="h-px bg-gray-200 w-full my-2"></div>
+
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <div className="mt-0.5 relative flex items-center justify-center">
+                        <input type="checkbox" className="peer sr-only" checked={donorDetails.showOnWall} onChange={e => setDonorDetails({...donorDetails, showOnWall: e.target.checked})} />
+                        <div className="w-5 h-5 border-2 border-gray-300 rounded peer-checked:bg-[#341100] peer-checked:border-[#341100] transition-colors"></div>
+                        <CheckCircle2 className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" />
+                      </div>
+                      <span className="text-sm text-gray-700 font-medium leading-snug">Display my donation on the public Donor Wall</span>
+                    </label>
+
+                    {/* Expandable Wall Options */}
+                    {donorDetails.showOnWall && (
+                      <div className="pl-8 space-y-3 animate-in fade-in slide-in-from-top-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="checkbox" className="rounded text-[#341100] focus:ring-[#341100] w-4 h-4 border-gray-300" checked={donorDetails.showFirstNameOnly} onChange={e => setDonorDetails({...donorDetails, showFirstNameOnly: e.target.checked})} />
+                          <span className="text-sm text-gray-600">Display my first name only</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input type="checkbox" className="rounded text-[#341100] focus:ring-[#341100] w-4 h-4 border-gray-300" checked={donorDetails.hideAmount} onChange={e => setDonorDetails({...donorDetails, hideAmount: e.target.checked})} />
+                          <span className="text-sm text-gray-600">Hide donation amount</span>
+                        </label>
+                        <div className="relative pt-1">
+                          <MessageSquareHeart className="absolute left-3 top-4 w-4 h-4 text-gray-400" />
+                          <textarea 
+                            placeholder="Write a comment for the wall... (optional)" 
+                            className="w-full border border-gray-300 pl-9 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-[#341100] outline-none resize-none" 
+                            rows="2"
+                            value={donorDetails.comment} onChange={e => setDonorDetails({...donorDetails, comment: e.target.value})}
+                          ></textarea>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <button 
+                    className="w-full bg-[#341100] hover:bg-black text-[#f2e9e4] font-extrabold text-xl py-4 rounded-xl transition-all shadow-lg flex justify-center items-center gap-2 mt-4"
+                    onClick={() => setDonationStep(3)}
+                  >
+                    Proceed to Payment <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+
+              {/* STEP 3: PAYMENT MOCKUP */}
+              {donationStep === 3 && (
+                <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+                  <div className="mb-6 flex items-center justify-between bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <span className="font-bold text-gray-700">Total Donation</span>
+                    <span className="font-extrabold text-2xl text-[#341100]">€{currentAmount} <span className="text-sm text-gray-500 font-medium">{donationType === 'monthly' ? '/ month' : ''}</span></span>
+                  </div>
+
+                  <div className="space-y-3 mb-6">
+                    <button className="w-full bg-black hover:bg-gray-800 text-white font-bold py-3.5 rounded-lg flex justify-center items-center gap-2 transition-colors">
+                      <svg className="w-5 h-5" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> Pay
+                    </button>
+                    <button className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-3.5 rounded-lg flex justify-center items-center gap-2 transition-colors shadow-sm">
+                      <svg className="w-5 h-5" viewBox="0 0 48 48"><path fill="#fbbc05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#ea4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34a853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="#4285f4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/></svg> Pay
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-4 text-gray-400 text-xs font-bold uppercase mb-6">
+                    <hr className="flex-1 border-gray-200" /> OR PAY WITH CARD <hr className="flex-1 border-gray-200" />
+                  </div>
+
+                  <div className="space-y-4 mb-8">
+                    <div className="relative">
+                      <CreditCard className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+                      <input placeholder="Card number" className="w-full border border-gray-300 pl-10 p-3.5 rounded-lg focus:ring-2 focus:ring-[#341100] outline-none font-medium" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <input placeholder="MM / YY" className="w-full border border-gray-300 p-3.5 rounded-lg focus:ring-2 focus:ring-[#341100] outline-none font-medium text-center" />
+                      <input placeholder="CVC" className="w-full border border-gray-300 p-3.5 rounded-lg focus:ring-2 focus:ring-[#341100] outline-none font-medium text-center" />
+                    </div>
+                  </div>
+
+                  <button 
+                    disabled={isProcessing}
+                    className="w-full bg-[#341100] hover:bg-black text-[#f2e9e4] font-extrabold text-xl py-4 rounded-xl transition-all shadow-lg flex justify-center items-center gap-2 disabled:opacity-80"
+                    onClick={handleProcessPayment}
+                  >
+                    {isProcessing ? <><Loader2 className="w-6 h-6 animate-spin" /> Processing...</> : `Donate €${currentAmount}`}
+                  </button>
+
+                  <div className="mt-4 flex items-center justify-center gap-2 text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    <Lock className="w-3.5 h-3.5" /> Secure Encrypted Payment
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4: THANK YOU */}
+              {donationStep === 4 && (
+                <div className="animate-in zoom-in-95 duration-500 flex flex-col items-center text-center py-8">
+                  <div className="w-24 h-24 bg-[#FF9900] rounded-full flex items-center justify-center mb-6 pulse-orange shadow-lg shadow-orange-500/40">
+                    <Heart className="w-12 h-12 text-white fill-white" />
+                  </div>
+                  <h2 className="text-4xl font-extrabold text-[#341100] mb-4">Thank You!</h2>
+                  <p className="text-lg text-gray-700 mb-8 max-w-sm">
+                    {donorDetails.firstName ? `${donorDetails.firstName}, your` : 'Your'} generosity helps us keep food transparency open, free, and completely independent for millions around the globe.
+                  </p>
+                  
+                  {donorDetails.email && (
+                    <div className="bg-orange-50 text-orange-800 p-4 rounded-xl mb-8 border border-orange-100 flex items-center gap-3">
+                      <Award className="w-8 h-8 text-[#FF9900]" />
+                      <p className="text-sm font-medium text-left">We've applied the Donor Badge to the account linked to <strong>{donorDetails.email}</strong>. Check your profile!</p>
+                    </div>
+                  )}
+
+                  <button 
+                    onClick={handleCloseModal}
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-[#341100] font-bold text-lg py-4 rounded-xl transition-colors"
+                  >
+                    Return to site
+                  </button>
+                </div>
+              )}
+
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Wall of Fame Context */}
+      {selectedPartner && (
+        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4 transition-opacity backdrop-blur-sm" onClick={() => setSelectedPartner(null)}>
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl transform transition-transform" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="absolute top-4 right-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+              onClick={() => setSelectedPartner(null)}
+            >
+              <X className="w-5 h-5 text-gray-700" />
+            </button>
+            <div className="w-16 h-16 bg-[#f2e9e4] rounded-2xl mb-6 flex items-center justify-center">
+              <BookOpen className="w-8 h-8 text-[#341100]" />
+            </div>
+            <h3 className="text-3xl font-extrabold text-black mb-2">{selectedPartner.name}</h3>
+            <p className="inline-block bg-gray-100 text-gray-700 font-bold px-3 py-1 rounded-full text-sm mb-6">
+              {selectedPartner.tier}
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              {selectedPartner.description}
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-[#f2e9e4] shadow-sm py-4 transition-all duration-300">
@@ -124,7 +464,7 @@ const SupportOFF = () => {
             <img 
               src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg" 
               alt="Open Food Facts" 
-              className="h-10 brightness-0"
+              className="h-10"
             />
           </a>
           <div className="hidden md:flex space-x-8 items-center">
@@ -151,15 +491,18 @@ const SupportOFF = () => {
                 Empowering the world to make <span className="text-[#341100]">better food choices.</span>
               </h1>
               <p className="text-xl text-gray-700 mb-10 leading-relaxed">
-                Open Food Facts is the &ldquo;Wikipedia of Food&rdquo;. We rely on a global community and visionary philanthropic partners to build a transparent, open-source food system for everyone, everywhere.
+                Open Food Facts is the "Wikipedia of Food". We rely on a global community and visionary philanthropic partners to build a transparent, open-source food system for everyone, everywhere.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a href="#contact" className="flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl">
                   Partner with us <ArrowRight className="w-5 h-5" />
                 </a>
-                <a href="https://donate.openfoodfacts.org" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 bg-[#f2e9e4] hover:bg-[#e2d5ce] text-black px-8 py-4 rounded-full font-bold text-lg transition-all">
+                <button 
+                  onClick={() => setIsDonationModalOpen(true)} 
+                  className="flex items-center justify-center gap-2 bg-[#f2e9e4] hover:bg-[#e2d5ce] text-black px-8 py-4 rounded-full font-bold text-lg transition-all"
+                >
                   Make a Donation <Heart className="w-5 h-5" />
-                </a>
+                </button>
               </div>
             </div>
             <div className="relative hidden lg:block">
@@ -170,8 +513,8 @@ const SupportOFF = () => {
               />
               <div className="absolute -bottom-10 -left-10 bg-[#f2e9e4] p-8 rounded-3xl shadow-xl max-w-xs border-4 border-white">
                 <Award className="w-12 h-12 text-[#341100] mb-4" />
-                <h3 className="font-bold text-xl text-black mb-2">EU Datathon Winners</h3>
-                <p className="text-sm text-gray-700">Recognized globally for leveraging open data for public health.</p>
+                <h3 className="font-bold text-xl text-black mb-2">Digital Public Good</h3>
+                <p className="text-sm text-gray-700">Recognized by the UN Endorsed DPGA for leveraging open data for humanity.</p>
               </div>
             </div>
           </div>
@@ -330,6 +673,12 @@ const SupportOFF = () => {
 
               <a 
                 href={supportWays[activeTab].link}
+                onClick={(e) => {
+                  if (supportWays[activeTab].link === "https://donate.openfoodfacts.org") {
+                    e.preventDefault();
+                    setIsDonationModalOpen(true);
+                  }
+                }}
                 className="inline-flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-lg"
               >
                 {supportWays[activeTab].cta} <ArrowRight className="w-5 h-5" />
@@ -345,19 +694,23 @@ const SupportOFF = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Our Wall of Fame</h2>
             <p className="text-gray-700 text-xl max-w-2xl mx-auto">
-              Open Food Facts is made possible by a coalition of forward-thinking institutions, philanthropic foundations, and thousands of individuals worldwide.
+              Open Food Facts is made possible by a coalition of forward-thinking institutions, philanthropic foundations, and thousands of individuals worldwide. Click below to learn more.
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {partners.map((partner, idx) => (
-              <div key={idx} className="bg-white border-2 border-transparent hover:border-[#341100] p-8 rounded-2xl text-center transition-all shadow-sm hover:shadow-md group">
+              <button 
+                key={idx} 
+                onClick={() => setSelectedPartner(partner)}
+                className="bg-white border-2 border-transparent hover:border-[#341100] p-8 rounded-2xl text-center transition-all shadow-sm hover:shadow-md hover:-translate-y-1 group w-full text-left flex flex-col items-center cursor-pointer"
+              >
                 <div className="w-16 h-16 mx-auto bg-gray-50 rounded-full mb-4 flex items-center justify-center group-hover:bg-[#f2e9e4] transition-colors">
                   <BookOpen className="w-8 h-8 text-[#341100]" />
                 </div>
-                <h4 className="font-extrabold text-xl text-black">{partner.name}</h4>
-                <p className="text-gray-600 font-medium mt-2">{partner.tier}</p>
-              </div>
+                <h4 className="font-extrabold text-xl text-black text-center">{partner.name}</h4>
+                <p className="text-gray-600 font-medium mt-2 text-center">{partner.tier}</p>
+              </button>
             ))}
           </div>
         </div>
@@ -369,10 +722,10 @@ const SupportOFF = () => {
           <div className="bg-[#f2e9e4] rounded-3xl p-8 md:p-16 shadow-xl flex flex-col md:flex-row items-center gap-12 border border-[#e2d5ce]">
             <div className="md:w-1/2">
               <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-6 tracking-tight">
-                Let&rsquo;s build the future of food together.
+                Let's build the future of food together.
               </h2>
               <p className="text-lg text-gray-800 mb-8 leading-relaxed">
-                Whether you represent a major foundation looking to fund a high-impact digital public good, or a tech organization wanting to support open data, I am available to discuss how we can align our goals.
+                Whether you represent a major foundation looking to fund a high-impact digital public good, or a tech organization wanting to support open data, we are available to discuss how we can align our goals.
               </p>
               
               <div className="space-y-6">
@@ -381,9 +734,9 @@ const SupportOFF = () => {
                     <Mail className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Email our Co-Founder &amp; CPO</p>
-                    <a href="mailto:pierre@openfoodfacts.org" className="text-xl font-extrabold text-black hover:text-[#341100]">
-                      pierre@openfoodfacts.org
+                    <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Email our Fundraising Team</p>
+                    <a href="mailto:partnerships@openfoodfacts.org" className="text-xl font-extrabold text-black hover:text-[#341100]">
+                      partnerships@openfoodfacts.org
                     </a>
                   </div>
                 </div>
@@ -393,7 +746,7 @@ const SupportOFF = () => {
                     <Phone className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Direct Line (Pierre Slamich)</p>
+                    <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Direct Line</p>
                     <a href="tel:+33602131457" className="text-xl font-extrabold text-black hover:text-[#341100]">
                       +33 6 02 13 14 57
                     </a>
@@ -442,9 +795,9 @@ const SupportOFF = () => {
           <div className="flex flex-wrap justify-center gap-8 text-sm font-bold tracking-wide uppercase">
             <a href="https://world.openfoodfacts.org" className="hover:text-white transition-colors">Main Website</a>
             <a href="https://world.openfoodfacts.org/terms-of-use" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="https://donate.openfoodfacts.org" className="hover:text-white transition-colors text-[#f2e9e4]">Donate</a>
+            <button onClick={() => setIsDonationModalOpen(true)} className="hover:text-white transition-colors text-[#f2e9e4]">Donate</button>
           </div>
-          <p className="mt-12 text-sm opacity-50 font-medium">&copy; {new Date().getFullYear()} Open Food Facts. All rights reserved.</p>
+          <p className="mt-12 text-sm opacity-50 font-medium">© {new Date().getFullYear()} Open Food Facts. All rights reserved.</p>
         </div>
       </footer>
     </div>
