@@ -736,7 +736,7 @@ const SupportOFF = () => {
                   <div>
                     <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Email our Fundraising Team</p>
                     <a href="mailto:partnerships@openfoodfacts.org" className="text-xl font-extrabold text-black hover:text-[#341100]">
-                      partnerships@openfoodfacts.org
+                      fundraising@openfoodfacts.org
                     </a>
                   </div>
                 </div>
@@ -765,7 +765,7 @@ const SupportOFF = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Organization / Foundation</label>
-                    <input type="text" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none transition-all font-medium" placeholder="e.g. The Gates Foundation" />
+                    <input type="text" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#341100] focus:border-[#341100] outline-none transition-all font-medium" placeholder="e.g. My Foundation" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
