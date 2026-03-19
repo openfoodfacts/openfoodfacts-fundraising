@@ -100,9 +100,9 @@ const SupportOFF = () => {
 
   const partners = [
     { name: "Santé Publique France", tier: "Public Institution", description: "We work closely with the French national public health agency to deploy and democratize the Nutri-Score, transforming public health awareness across Europe." },
-    { name: "Google.org", tier: "Foundation Partner", description: "Through the Google.org Fellowship and financial grants, we scaled our AI capabilities, empowering us to process thousands of labels and ingredients globally." },
+    { name: "Google.org", tier: "Foundation Partner", description: "Through the Google.org Fellowship and financial grants, we scaled the Green-Score as well as our AI capabilities, empowering us to process millions of products globally." },
     { name: "ADEME", tier: "Public Institution", description: "Partnering with the French Agency for Ecological Transition to develop robust environmental impact metrics and drive sustainable consumption." },
-    { name: "AFNIC", tier: "Private Foundation", description: "Supported by the AFNIC Foundation to strengthen our digital infrastructure, ensuring our open data remains resilient, secure, and accessible to all." },
+    { name: "AFNIC", tier: "Private Foundation", description: "Supported by the AFNIC Foundation to develop our circular economy initiative, with Open Products Facts, with the long term goal to increase the lifespan of products." },
     { name: "EREN", tier: "Research Partner", description: "Collaborating with the Nutritional Epidemiology Research Team (EREN) to provide the vital raw data required for pivotal, independent public health studies." },
     { name: "10,000+ Individuals", tier: "Grassroots Donors", description: "Our most important partners. Everyday citizens who scan products, edit data, and donate financially to keep the database alive, free, and completely independent." }
   ];
