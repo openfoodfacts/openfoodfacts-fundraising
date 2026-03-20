@@ -21,7 +21,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">Email our Fundraising Team</p>
-                  <a href="mailto:partnerships@openfoodfacts.org" className="text-xl font-extrabold text-black hover:text-[#341100]">
+                  <a href="mailto:fundraising@openfoodfacts.org" className="text-xl font-extrabold text-black hover:text-[#341100]">
                     fundraising@openfoodfacts.org
                   </a>
                 </div>

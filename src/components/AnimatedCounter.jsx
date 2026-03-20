@@ -6,6 +6,9 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = "", label }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const node = countRef.current;
+    if (!node) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -15,10 +18,11 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = "", label }) => {
       { threshold: 0.1 }
     );
     
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-    return () => observer.disconnect();
+    observer.observe(node);
+    return () => {
+      observer.unobserve(node);
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
