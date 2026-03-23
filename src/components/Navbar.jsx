@@ -15,6 +15,7 @@ const Navbar = ({ onSupportClick }) => {
         <div className="hidden md:flex space-x-8 items-center">
           <Link to="/" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Support</Link>
           <Link to="/impact" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Impact</Link>
+          <Link to="/about" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">About</Link>
           <a href="#independence" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Independence</a>
           <a href="#initiatives" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Initiatives</a>
           <a href="#ways-to-help" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Ways to Help</a>
