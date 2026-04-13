@@ -1,0 +1,2 @@
+Can you create a compelling website that recreate those pages. You can use images from our website, try to respect our graphic charter, while being responsive, enjoyable interactive… Our logo is available at https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg the top bar should be: #f2e9e4 you can use black and buttons bg can be: #341100. The Font is Plus Jakarta Sans.  You can take this as inspiration: https://openfoodfacts.github.io/openfoodfacts-fundraising/ 
+https://world.openfoodfacts.org/contribute
