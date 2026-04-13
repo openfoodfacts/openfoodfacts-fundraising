@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import SupportPage from './pages/SupportPage'
 import ImpactPage from './pages/ImpactPage'
 import AboutPage from './pages/AboutPage'
+import ContributePage from './pages/ContributePage'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Route path="/" element={<SupportPage />} />
         <Route path="/impact" element={<ImpactPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contribute" element={<ContributePage />} />
       </Routes>
     </HashRouter>
   )
