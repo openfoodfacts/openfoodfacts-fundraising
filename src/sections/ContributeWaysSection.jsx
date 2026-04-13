@@ -40,7 +40,7 @@ const contributions = [
   {
     icon: <Globe size={32} className="text-[#341100]" />,
     title: 'Translate',
-    desc: "Food is a universal language, but our app isn't yet! Help us translate the project into your native language.",
+    desc: "Food is a universal language, but our app isn\u2019t yet! Help us translate the project into your native language.",
     action: 'Join Crowdin',
     color: 'bg-white border-2 border-gray-200',
     iconBg: 'bg-[#f2e9e4]',
