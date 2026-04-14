@@ -3,6 +3,7 @@ import SupportPage from './pages/SupportPage'
 import ImpactPage from './pages/ImpactPage'
 import AboutPage from './pages/AboutPage'
 import ContributePage from './pages/ContributePage'
+import DiscoverPage from './pages/DiscoverPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/impact" element={<ImpactPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contribute" element={<ContributePage />} />
+        <Route path="/discover" element={<DiscoverPage />} />
       </Routes>
     </HashRouter>
   )

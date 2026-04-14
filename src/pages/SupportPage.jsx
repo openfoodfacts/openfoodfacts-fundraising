@@ -21,7 +21,7 @@ const SupportPage = () => {
   const closeDonationModal = () => setIsDonationModalOpen(false);
 
   return (
-    <div className="font-jakarta text-black bg-white min-h-screen">
+    <div className="font-jakarta text-black dark:text-white bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
       <GlobalStyles />
       <DonationModal isOpen={isDonationModalOpen} onClose={closeDonationModal} />
       <PartnerModal partner={selectedPartner} onClose={() => setSelectedPartner(null)} />
