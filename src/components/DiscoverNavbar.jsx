@@ -7,12 +7,20 @@ const DiscoverNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDark, toggleDark] = useDarkMode();
 
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileOpen(false);
+  };
+
   return (
     <nav className="bg-off-header dark:bg-gray-900 py-4 px-6 md:px-12 sticky top-0 z-50 transition-all duration-300 w-full dark:border-b dark:border-gray-800">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link to="/discover" className="flex items-center gap-2 z-50">
           <img
-            src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
+            src={isDark ? "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg" : "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"}
             alt="Open Food Facts"
             className="h-8 md:h-10"
           />
@@ -35,7 +43,7 @@ const DiscoverNavbar = () => {
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
           <a href="https://donate.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="font-bold text-off-btn dark:text-orange-400 hover:opacity-80 transition-opacity">Donate</a>
-          <a href="#download" className="bg-off-btn dark:bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all">Get the App</a>
+          <button onClick={() => scrollTo('download')} className="bg-off-btn dark:bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">Get the App</button>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -59,7 +67,7 @@ const DiscoverNavbar = () => {
         <a href="https://world.openfoodfacts.org/data" target="_blank" rel="noopener noreferrer" className="text-2xl font-bold dark:text-white" onClick={() => setMobileOpen(false)}>Data &amp; API</a>
         <Link to="/about" className="text-2xl font-bold dark:text-white" onClick={() => setMobileOpen(false)}>About Us</Link>
         <a href="https://donate.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="text-2xl font-bold text-off-btn dark:text-orange-400" onClick={() => setMobileOpen(false)}>Donate</a>
-        <a href="#download" className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-xl mt-4" onClick={() => setMobileOpen(false)}>Get the App</a>
+        <button onClick={() => scrollTo('download')} className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-xl mt-4 cursor-pointer">Get the App</button>
         <button
           onClick={() => { toggleDark(); setMobileOpen(false); }}
           className="flex items-center gap-2 text-gray-600 dark:text-gray-300 font-semibold"

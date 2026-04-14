@@ -18,9 +18,9 @@ const HeroSection = ({ onDonateClick }) => {
               Open Food Facts is the &quot;Wikipedia of Food&quot;. We rely on a global community and visionary philanthropic partners to build a transparent, open-source food system for everyone, everywhere.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#contact" className="flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl">
+              <button onClick={() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} className="flex items-center justify-center gap-2 bg-[#341100] hover:bg-black text-[#f2e9e4] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl cursor-pointer">
                 Partner with us <ArrowRight className="w-5 h-5" />
-              </a>
+              </button>
               <button 
                 onClick={onDonateClick} 
                 className="flex items-center justify-center gap-2 bg-[#f2e9e4] hover:bg-[#e2d5ce] text-black px-8 py-4 rounded-full font-bold text-lg transition-all"

@@ -12,7 +12,7 @@ const Navbar = ({ onSupportClick }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
+            src={isDark ? "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg" : "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"}
             alt="Open Food Facts"
             className="h-10"
           />
@@ -37,9 +37,9 @@ const Navbar = ({ onSupportClick }) => {
               Support Us
             </button>
           ) : (
-            <a href="#contact" className="bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold transition-all shadow-lg transform hover:-translate-y-0.5">
+            <Link to="/" className="bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold transition-all shadow-lg transform hover:-translate-y-0.5">
               Support Us
-            </a>
+            </Link>
           )}
         </div>
 
@@ -75,9 +75,9 @@ const Navbar = ({ onSupportClick }) => {
               Support Us
             </button>
           ) : (
-            <a href="#contact" className="block bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold text-center transition-all shadow-lg" onClick={() => setMobileOpen(false)}>
+            <Link to="/" className="block bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold text-center transition-all shadow-lg" onClick={() => setMobileOpen(false)}>
               Support Us
-            </a>
+            </Link>
           )}
         </div>
       )}

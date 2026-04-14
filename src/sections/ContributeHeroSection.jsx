@@ -24,9 +24,9 @@ function ContributeHeroSection() {
           Open Food Facts is a collaborative database of food products. Every photo you take and every ingredient you transcribe helps millions of people eat better.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a href="#ways-to-help" className="bg-[#341100] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-black transition-all transform hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg">
+          <button onClick={() => { const el = document.getElementById('ways-to-help'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#341100] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-black transition-all transform hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg cursor-pointer">
             Find how to help <ChevronDown size={20} />
-          </a>
+          </button>
           <a href="https://world.openfoodfacts.org/discover" target="_blank" rel="noreferrer" className="bg-white text-[#341100] border-2 border-[#341100]/20 px-8 py-4 rounded-full font-bold text-lg hover:border-[#341100] transition-all w-full sm:w-auto justify-center text-center">
             Explore the database
           </a>

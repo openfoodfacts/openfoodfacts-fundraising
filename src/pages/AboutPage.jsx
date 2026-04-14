@@ -38,7 +38,7 @@ const AboutPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <img
-              src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
+              src={isDark ? "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg" : "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"}
               alt="Open Food Facts"
               className="h-10"
             />
