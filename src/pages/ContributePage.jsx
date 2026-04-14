@@ -9,7 +9,7 @@ import ContributeCtaSection from '../sections/ContributeCtaSection';
 
 const ContributePage = () => {
   return (
-    <div className="font-jakarta text-black bg-white min-h-screen">
+    <div className="font-jakarta text-black dark:text-white bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
       <GlobalStyles />
       <Navbar />
       <ContributeHeroSection />

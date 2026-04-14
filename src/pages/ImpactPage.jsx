@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { 
   Globe, Users, Database, Leaf, Shield, 
   ArrowRight, Heart, FileText, BarChart3, 
-  MessageSquare, ExternalLink, Menu, X
+  MessageSquare, ExternalLink, Menu, X, Moon, Sun
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import GlobalStyles from '../components/GlobalStyles';
 import AnimatedCounter from '../components/AnimatedCounter';
 import Footer from '../components/Footer';
+import useDarkMode from '../hooks/useDarkMode';
 
 const ImpactPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDark, toggleDark] = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,11 +24,11 @@ const ImpactPage = () => {
   }, []);
 
   return (
-    <div className="font-jakarta text-black bg-white min-h-screen selection:bg-[#341100] selection:text-white overflow-x-hidden">
+    <div className="font-jakarta text-black dark:text-white bg-white dark:bg-gray-900 min-h-screen selection:bg-[#341100] selection:text-white overflow-x-hidden transition-colors duration-300">
       <GlobalStyles />
 
       {/* Navbar with scroll shadow */}
-      <nav className={`fixed w-full z-50 bg-[#f2e9e4] py-4 transition-all duration-300 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <nav className={`fixed w-full z-50 bg-[#f2e9e4] dark:bg-gray-900 py-4 transition-all duration-300 dark:border-b dark:border-gray-800 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <img 
@@ -38,31 +40,45 @@ const ImpactPage = () => {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex space-x-8 items-center">
-            <Link to="/" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Support</Link>
-            <Link to="/impact" className="font-semibold text-[#341100] transition-colors">Impact</Link>
-            <a href="#stats" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Stats</a>
-            <a href="#mission" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Mission</a>
-            <a href="#research" className="font-semibold text-black hover:text-[#341100]/70 transition-colors">Research</a>
-            <Link to="/" className="bg-[#341100] hover:bg-black text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold transition-all shadow-lg transform hover:-translate-y-0.5">
+            <Link to="/" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Support</Link>
+            <Link to="/impact" className="font-semibold text-[#341100] dark:text-orange-400 transition-colors">Impact</Link>
+            <a href="#stats" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Stats</a>
+            <a href="#mission" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Mission</a>
+            <a href="#research" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Research</a>
+            <button
+              onClick={toggleDark}
+              className="text-gray-500 hover:text-[#341100] dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <Link to="/" className="bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold transition-all shadow-lg transform hover:-translate-y-0.5">
               Support Us
             </Link>
           </div>
 
           {/* Mobile menu toggle */}
-          <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button className="md:hidden p-2 text-black dark:text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#f2e9e4] border-t border-[#e2d5ce] px-4 py-6 space-y-4">
-            <Link to="/" className="block font-semibold text-black hover:text-[#341100]/70 transition-colors" onClick={() => setMobileMenuOpen(false)}>Support</Link>
-            <Link to="/impact" className="block font-semibold text-[#341100] transition-colors" onClick={() => setMobileMenuOpen(false)}>Impact</Link>
-            <a href="#stats" className="block font-semibold text-black hover:text-[#341100]/70 transition-colors" onClick={() => setMobileMenuOpen(false)}>Stats</a>
-            <a href="#mission" className="block font-semibold text-black hover:text-[#341100]/70 transition-colors" onClick={() => setMobileMenuOpen(false)}>Mission</a>
-            <a href="#research" className="block font-semibold text-black hover:text-[#341100]/70 transition-colors" onClick={() => setMobileMenuOpen(false)}>Research</a>
-            <Link to="/" className="block bg-[#341100] hover:bg-black text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold text-center transition-all shadow-lg" onClick={() => setMobileMenuOpen(false)}>
+          <div className="md:hidden bg-[#f2e9e4] dark:bg-gray-900 border-t border-[#e2d5ce] dark:border-gray-800 px-4 py-6 space-y-4">
+            <Link to="/" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Support</Link>
+            <Link to="/impact" className="block font-semibold text-[#341100] dark:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Impact</Link>
+            <a href="#stats" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Stats</a>
+            <a href="#mission" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Mission</a>
+            <a href="#research" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Research</a>
+            <button
+              onClick={() => { toggleDark(); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {isDark ? 'Light Mode' : 'Dark Mode'}
+            </button>
+            <Link to="/" className="block bg-[#341100] hover:bg-black dark:bg-orange-600 dark:hover:bg-orange-500 text-[#f2e9e4] px-6 py-2.5 rounded-full font-bold text-center transition-all shadow-lg" onClick={() => setMobileMenuOpen(false)}>
               Support Us
             </Link>
           </div>
@@ -70,17 +86,17 @@ const ImpactPage = () => {
       </nav>
 
       {/* Hero */}
-      <header className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
+      <header className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f2e9e4] text-[#341100] text-sm font-bold mb-8 uppercase tracking-wide">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f2e9e4] dark:bg-gray-800 text-[#341100] dark:text-orange-400 text-sm font-bold mb-8 uppercase tracking-wide">
               <BarChart3 className="w-4 h-4" />
               Our Impact in Numbers
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-black leading-tight mb-6 tracking-tight">
-              Measuring our <span className="text-[#341100]">global impact.</span>
+            <h1 className="text-5xl md:text-7xl font-extrabold text-black dark:text-white leading-tight mb-6 tracking-tight">
+              Measuring our <span className="text-[#341100] dark:text-orange-400">global impact.</span>
             </h1>
-            <p className="text-xl text-gray-700 mb-10 leading-relaxed">
+            <p className="text-xl text-gray-700 dark:text-gray-300 mb-10 leading-relaxed">
               From scientific research to policy change, Open Food Facts data drives real-world outcomes. 
               Here&apos;s a look at the numbers behind our mission.
             </p>
@@ -89,19 +105,19 @@ const ImpactPage = () => {
       </header>
 
       {/* Animated Stats Section */}
-      <section id="stats" className="py-20 bg-[#f2e9e4]">
+      <section id="stats" className="py-20 bg-[#f2e9e4] dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-6 tracking-tight">The Numbers That Matter</h2>
-            <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-6 tracking-tight">The Numbers That Matter</h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
               Every number represents real impact — products scanned, lives informed, and research enabled.
             </p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-center pt-6">
-                <div className="bg-[#f2e9e4] p-4 rounded-full">
-                  <Database className="w-8 h-8 text-black" />
+                <div className="bg-[#f2e9e4] dark:bg-gray-600 p-4 rounded-full">
+                  <Database className="w-8 h-8 text-black dark:text-white" />
                 </div>
               </div>
               <AnimatedCounter end={4000000} suffix="+" label="Products in database" />

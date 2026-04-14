@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = ({ onDonateClick }) => {
   return (
-    <footer className="bg-black text-gray-400 py-16 text-center">
+    <footer className="bg-black dark:bg-gray-950 text-gray-400 py-16 text-center transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-center items-center gap-2 mb-8">
           <img 
