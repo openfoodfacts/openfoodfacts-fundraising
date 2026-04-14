@@ -33,18 +33,18 @@ const DiscoverHeroSection = () => {
             everyone, for everyone.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#download"
-              className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-center hover:shadow-soft hover:-translate-y-1 transition-all flex justify-center items-center gap-2"
+            <button
+              onClick={() => { const el = document.getElementById('download'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+              className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-center hover:shadow-soft hover:-translate-y-1 transition-all flex justify-center items-center gap-2 cursor-pointer"
             >
               <Smartphone className="w-5 h-5" /> Download the App
-            </a>
-            <a
-              href="#explore"
-              className="bg-transparent border-2 border-off-btn dark:border-orange-400 text-off-btn dark:text-orange-400 px-8 py-4 rounded-full font-bold text-center hover:bg-off-btn dark:hover:bg-orange-400 hover:text-white dark:hover:text-gray-900 transition-all flex justify-center items-center gap-2"
+            </button>
+            <button
+              onClick={() => { const el = document.getElementById('explore'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+              className="bg-transparent border-2 border-off-btn dark:border-orange-400 text-off-btn dark:text-orange-400 px-8 py-4 rounded-full font-bold text-center hover:bg-off-btn dark:hover:bg-orange-400 hover:text-white dark:hover:text-gray-900 transition-all flex justify-center items-center gap-2 cursor-pointer"
             >
               Explore Database
-            </a>
+            </button>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const DiscoverHeroSection = () => {
                   <img
                     src="https://static.openfoodfacts.org/images/attributes/dist/nova-group-3.svg"
                     alt="Nova 3"
-                    className="h-10"
+                    className="h-5"
                   />
                 </div>
                 <div className="space-y-3">

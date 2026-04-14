@@ -15,6 +15,14 @@ const ImpactPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDark, toggleDark] = useDarkMode();
 
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -32,7 +40,7 @@ const ImpactPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg" 
+              src={isDark ? "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg" : "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"} 
               alt="Open Food Facts" 
               className="h-10"
             />
@@ -42,9 +50,9 @@ const ImpactPage = () => {
           <div className="hidden md:flex space-x-8 items-center">
             <Link to="/" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Support</Link>
             <Link to="/impact" className="font-semibold text-[#341100] dark:text-orange-400 transition-colors">Impact</Link>
-            <a href="#stats" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Stats</a>
-            <a href="#mission" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Mission</a>
-            <a href="#research" className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors">Research</a>
+            <button onClick={() => scrollTo('stats')} className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Stats</button>
+            <button onClick={() => scrollTo('mission')} className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Mission</button>
+            <button onClick={() => scrollTo('research')} className="font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Research</button>
             <button
               onClick={toggleDark}
               className="text-gray-500 hover:text-[#341100] dark:text-gray-400 dark:hover:text-orange-400 transition-colors"
@@ -68,9 +76,9 @@ const ImpactPage = () => {
           <div className="md:hidden bg-[#f2e9e4] dark:bg-gray-900 border-t border-[#e2d5ce] dark:border-gray-800 px-4 py-6 space-y-4">
             <Link to="/" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Support</Link>
             <Link to="/impact" className="block font-semibold text-[#341100] dark:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Impact</Link>
-            <a href="#stats" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Stats</a>
-            <a href="#mission" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Mission</a>
-            <a href="#research" className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors" onClick={() => setMobileMenuOpen(false)}>Research</a>
+            <button onClick={() => scrollTo('stats')} className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Stats</button>
+            <button onClick={() => scrollTo('mission')} className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Mission</button>
+            <button onClick={() => scrollTo('research')} className="block font-semibold text-black dark:text-gray-200 hover:text-[#341100]/70 dark:hover:text-orange-400 transition-colors cursor-pointer">Research</button>
             <button
               onClick={() => { toggleDark(); setMobileMenuOpen(false); }}
               className="flex items-center gap-2 font-semibold text-gray-600 dark:text-gray-300"

@@ -11,7 +11,7 @@ const DiscoverFooter = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
         <div>
           <img
-            src="https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"
+            src={isDark ? "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-dark.svg" : "https://static.openfoodfacts.org/images/logos/off-logo-horizontal-light.svg"}
             alt="Open Food Facts"
             className="h-8 mb-6"
           />
@@ -24,9 +24,10 @@ const DiscoverFooter = () => {
           <h4 className="font-bold mb-4 dark:text-white">Discover</h4>
           <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li><a href="https://world.openfoodfacts.org/nutriscore" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Nutri-Score</a></li>
-            <li><a href="https://world.openfoodfacts.org/eco-score-the-environmental-impact-of-food-products" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Green-Score</a></li>
+            <li><a href="https://world.openfoodfacts.org/green-score" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Green-Score</a></li>
             <li><a href="https://world.openfoodfacts.org/nova" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Ultra-processed Foods</a></li>
             <li><a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Search products</a></li>
+            <li><Link to="/impact" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Impact</Link></li>
           </ul>
         </div>
 
@@ -35,6 +36,7 @@ const DiscoverFooter = () => {
           <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li><a href="https://world.openfoodfacts.org/1" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Add a product</a></li>
             <li><a href="https://world.openfoodfacts.org/data" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Developers API</a></li>
+            <li><Link to="/contribute" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Contribute Page</Link></li>
             <li><a href="https://donate.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Donate</a></li>
           </ul>
         </div>
@@ -43,6 +45,7 @@ const DiscoverFooter = () => {
           <h4 className="font-bold mb-4 dark:text-white">About</h4>
           <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li><Link to="/about" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Who we are</Link></li>
+            <li><Link to="/" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Support Us</Link></li>
             <li><a href="https://world.openfoodfacts.org/press" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Press</a></li>
             <li><a href="https://world.openfoodfacts.org/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Terms of use</a></li>
             <li><a href="https://world.openfoodfacts.org/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-off-btn dark:hover:text-orange-400 transition-colors">Privacy policy</a></li>
@@ -52,7 +55,7 @@ const DiscoverFooter = () => {
 
       <div className="max-w-7xl mx-auto border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-gray-500 dark:text-gray-400 text-sm">
-          &copy; {new Date().getFullYear()} Open Food Facts. Open Data.
+          &copy; 2012-2026 Open Food Facts. Open Data.
         </p>
         <div className="flex items-center gap-6">
           {/* Dark Mode Toggle */}

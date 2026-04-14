@@ -20,7 +20,7 @@ const tabs = [
     description:
       'The Green-Score tells you the environmental footprint of a product, from agricultural production to packaging and transportation.',
     learnMoreUrl:
-      'https://world.openfoodfacts.org/eco-score-the-environmental-impact-of-food-products',
+      'https://world.openfoodfacts.org/green-score',
     learnMoreLabel: 'Learn more about Green-Score',
     image: 'https://static.openfoodfacts.org/images/attributes/dist/green-score-a.svg',
     imageAlt: 'Green-Score example',
@@ -95,7 +95,7 @@ const ScienceScoringSection = () => {
               <img
                 src={current.image}
                 alt={current.imageAlt}
-                className="w-full max-w-sm mx-auto h-auto transition-transform duration-500 transform hover:scale-110 drop-shadow-xl"
+                className={`mx-auto h-auto transition-transform duration-500 transform hover:scale-110 drop-shadow-xl ${current.id === 'nova' ? 'w-full max-w-[10rem]' : 'w-full max-w-sm'}`}
               />
               {/* Decorative Elements */}
               <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-white/50"></div>
