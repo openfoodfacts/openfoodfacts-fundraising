@@ -35,7 +35,7 @@ const DiscoverNavbar = () => {
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
           <a href="https://donate.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="font-bold text-off-btn dark:text-orange-400 hover:opacity-80 transition-opacity">Donate</a>
-          <a href="#download" className="bg-off-btn text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all">Get the App</a>
+          <a href="#download" className="bg-off-btn dark:bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all">Get the App</a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -59,7 +59,7 @@ const DiscoverNavbar = () => {
         <a href="https://world.openfoodfacts.org/data" target="_blank" rel="noopener noreferrer" className="text-2xl font-bold dark:text-white" onClick={() => setMobileOpen(false)}>Data &amp; API</a>
         <Link to="/about" className="text-2xl font-bold dark:text-white" onClick={() => setMobileOpen(false)}>About Us</Link>
         <a href="https://donate.openfoodfacts.org" target="_blank" rel="noopener noreferrer" className="text-2xl font-bold text-off-btn dark:text-orange-400" onClick={() => setMobileOpen(false)}>Donate</a>
-        <a href="#download" className="bg-off-btn text-white px-8 py-4 rounded-full font-bold text-xl mt-4" onClick={() => setMobileOpen(false)}>Get the App</a>
+        <a href="#download" className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-xl mt-4" onClick={() => setMobileOpen(false)}>Get the App</a>
         <button
           onClick={() => { toggleDark(); setMobileOpen(false); }}
           className="flex items-center gap-2 text-gray-600 dark:text-gray-300 font-semibold"

@@ -63,7 +63,7 @@ const ScienceScoringSection = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-6 py-3 rounded-full font-bold whitespace-nowrap transition-all ${
                     activeTab === tab.id
-                      ? 'bg-off-btn text-white'
+                      ? 'bg-off-btn dark:bg-orange-600 text-white'
                       : 'bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >

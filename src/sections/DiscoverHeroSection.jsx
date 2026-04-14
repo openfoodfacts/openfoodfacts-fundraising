@@ -35,7 +35,7 @@ const DiscoverHeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="#download"
-              className="bg-off-btn text-white px-8 py-4 rounded-full font-bold text-center hover:shadow-soft hover:-translate-y-1 transition-all flex justify-center items-center gap-2"
+              className="bg-off-btn dark:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-center hover:shadow-soft hover:-translate-y-1 transition-all flex justify-center items-center gap-2"
             >
               <Smartphone className="w-5 h-5" /> Download the App
             </a>
@@ -104,7 +104,7 @@ const DiscoverHeroSection = () => {
             </div>
 
             {/* Floating Scanner Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-off-btn text-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
+            <div className="absolute -bottom-6 -left-6 bg-off-btn dark:bg-orange-600 text-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
               <div className="bg-white/20 p-2 rounded-xl">
                 <ScanLine className="w-6 h-6" />
               </div>

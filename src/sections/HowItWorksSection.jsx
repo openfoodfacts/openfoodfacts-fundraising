@@ -50,7 +50,7 @@ const HowItWorksSection = () => {
                 idx === 1 ? 'delay-100' : idx === 2 ? 'delay-200' : ''
               }`}
             >
-              <div className="w-16 h-16 bg-off-btn text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+              <div className="w-16 h-16 bg-off-btn dark:bg-orange-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                 {step.icon}
               </div>
               <h3 className="text-2xl font-bold mb-3 dark:text-white">
